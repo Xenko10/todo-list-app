@@ -19,10 +19,6 @@ main {
   text-align: center;
 }
 
-h1 {
-  color: #fff;
-}
-
 #text-form,
 #submit-form {
   appearance: none;
@@ -85,6 +81,7 @@ footer {
   display: flex;
   justify-content: center;
   margin-top: auto;
+  text-align: center;
 }
 
 .topnav {
@@ -124,6 +121,7 @@ ul {
 
 #heading {
   background-color: #a683e3;
+  color: #fff;
   box-shadow: 0.3125rem 0.3125rem 0.9375rem -0.3125rem rgba(0, 0, 0, 0.3);
   min-width: 25rem;
   margin: 3.125rem auto;

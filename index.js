@@ -4,16 +4,19 @@ import bodyParser from "body-parser";
 const app = express();
 const port = 3000;
 
+const list = [];
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static("public"));
 
 app.get("/", (req, res) => {
-  res.render("index.ejs");
+  res.render("index.ejs", { text: list });
 });
 
 app.post("/submit", (req, res) => {
-  res.render("index.ejs", { text: req.body.input });
+  list.push(req.body.input);
+  res.render("index.ejs", { text: list });
 });
 
 app.listen(port, () => {

@@ -13,20 +13,35 @@
         <div id="todo-wrapper">
           <ul>
             <% if (locals.text){ %>
-              <li class="todo-item">
-                <input type="checkbox"></input>
-                <p>
-                  <%=text%>
-                </p>
-              </li>
-              <% } %>
-                <li>
-                  <form action="/submit" method="POST">
-                    <input type="text" name="input" id="text-form" placeholder="New Item">
-                    <input type="submit" value="+" id="submit-form">
-                  </form>
+              <% for (let i=0; i<text.length; i++){%>
+                <li class="todo-item">
+                  <input type="checkbox" class="toggleButton" autocomplete="off"></input>
+                  <p class="targetElement">
+                    <%=text[i]%>
+                  </p>
                 </li>
+                <% }} %>
+                  <li>
+                    <form action="/submit" method="POST">
+                      <input type="text" name="input" id="text-form" placeholder="New Item">
+                      <input type="submit" value="+" id="submit-form">
+                    </form>
+                  </li>
           </ul>
 
+
         </div>
+        <script>
+          const toggleButtons = document.getElementsByClassName('toggleButton');
+          const targetElements = document.getElementsByClassName('targetElement');
+          for (let j = 0; j < toggleButtons.length; j++) {
+            toggleButtons[j].addEventListener('click', function () {
+              if (targetElements[j].classList.contains('done')) {
+                targetElements[j].classList.remove('done');
+              } else {
+                targetElements[j].classList.add('done');
+              }
+            });
+          }
+        </script>
         <%- include("partials/footer.ejs") %>
