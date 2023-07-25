@@ -12,9 +12,9 @@ app.get("/", (req, res) => {
   res.render("index.ejs");
 });
 
-// app.post("/submit", (req, res) => {
-//   res.render("index.ejs", { cos });
-// });
+app.post("/submit", (req, res) => {
+  res.render("index.ejs", { text: res.body.input });
+});
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
