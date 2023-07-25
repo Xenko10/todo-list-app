@@ -23,7 +23,8 @@ h1 {
   color: #fff;
 }
 
-input {
+#text-form,
+#submit-form {
   appearance: none;
   -webkit-appearance: none;
   border: 0;
@@ -31,19 +32,40 @@ input {
   height: 3.75rem;
   padding: 0 0.3125rem 0 0.3125rem;
   text-align: center;
+  border-radius: 0.3125rem;
 }
 
 input[type="text"]:focus {
   outline: none;
+  border-radius: 0.3125rem;
 }
 
-form {
-  border-radius: 0.3125rem;
+form,
+.todo-item {
   height: 3.75rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   min-width: 25rem;
   padding: 0;
+}
+
+input[type="checkbox"] {
+  margin: 1.4375rem;
+  flex: 1;
+}
+
+p {
+  flex: 100;
+}
+
+.done {
+  text-decoration: line-through;
+}
+
+.todo-item {
+  border-bottom: 1px solid #1e2d2f;
+  text-align: start;
 }
 
 #text-form {
@@ -94,10 +116,10 @@ ul {
 #todo-wrapper {
   background-color: white;
   color: #1e2d2f;
-  border-radius: 0.3125rem;
   box-shadow: 0.3125rem 0.3125rem 0.9375rem -0.3125rem rgba(0, 0, 0, 0.3);
   display: flex;
   justify-content: column;
+  border-radius: 0.3125rem;
 }
 
 #heading {

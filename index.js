@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/submit", (req, res) => {
-  res.render("index.ejs", { text: res.body.input });
+  res.render("index.ejs", { text: req.body.input });
 });
 
 app.listen(port, () => {

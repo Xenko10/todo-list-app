@@ -12,12 +12,20 @@
         </div>
         <div id="todo-wrapper">
           <ul>
-            <li>
-              <form action="/submit" method="POST">
-                <input type="text" name="input" id="text-form" placeholder="New Item">
-                <input type="submit" value="+" id="submit-form">
-              </form>
-            </li>
+            <% if (locals.text){ %>
+              <li class="todo-item">
+                <input type="checkbox"></input>
+                <p>
+                  <%=text%>
+                </p>
+              </li>
+              <% } %>
+                <li>
+                  <form action="/submit" method="POST">
+                    <input type="text" name="input" id="text-form" placeholder="New Item">
+                    <input type="submit" value="+" id="submit-form">
+                  </form>
+                </li>
           </ul>
 
         </div>
