@@ -1,0 +1,25 @@
+{
+  "name": "todo-list-app",
+  "version": "1.0.0",
+  "description": "Create, read, update, delete todo list application.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "todo-list-app"
+  },
+  "keywords": [
+    "todo",
+    "list",
+    "app",
+    "create",
+    "read",
+    "update",
+    "delete"
+  ],
+  "author": "Xenko",
+  "license": "ISC"
+}
