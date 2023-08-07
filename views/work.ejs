@@ -9,7 +9,7 @@
             <% if (locals.text){ %>
                 <% for (let i=0; i<text.length; i++){%>
                     <li class="todo-item">
-                        <input type="checkbox" class="toggleButton" autocomplete="off"></input>
+                        <input type="checkbox" class="toggleButton"></input>
                         <p class="targetElement">
                             <%=text[i]%>
                         </p>
@@ -32,10 +32,19 @@
             toggleButtons[j].addEventListener('click', function () {
                 if (targetElements[j].classList.contains('done')) {
                     targetElements[j].classList.remove('done');
+                    sessionStorage.setItem("key2" + j, "")
                 } else {
                     targetElements[j].classList.add('done');
+                    sessionStorage.setItem("key2" + j, "done")
                 }
             });
+            if (sessionStorage.getItem(`key2${j}`) === "done") {
+                targetElements[j].classList.add('done');
+                toggleButtons[j].checked = true
+            } else {
+                targetElements[j].classList.remove('done');
+                toggleButtons[j].checked = false
+            }
         }
     </script>
     <%- include("partials/footer.ejs") %>
