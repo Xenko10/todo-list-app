@@ -3,5 +3,5 @@
    - git clone https://github.com/Xenko10/todo-list-app.git
    - npm install
 2. To start the express server, run the following
-   - node.js index.js
+   - node index.js
    - open http://localhost:3000
