@@ -1,6 +1,7 @@
 body {
   background-color: #d1faff;
-  background-image: -webkit-linear-gradient(65deg, #6a8eae 50%, #d1faff 50%);
+  background: linear-gradient(7deg, #6a8eae calc(50% - 1px), #d1faff 50%);
+
   color: #292f36;
   min-height: 100vh;
 
