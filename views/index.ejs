@@ -17,7 +17,7 @@
                 <li class="todo-item">
                   <input type="checkbox" class="toggleButton"></input>
                   <p class="targetElement">
-                    <%=text[i]%>
+                    <%=text[i].task%>
                   </p>
                 </li>
                 <% }} %>
@@ -32,26 +32,17 @@
 
         </div>
         <script>
-
           const toggleButtons = document.getElementsByClassName('toggleButton');
           const targetElements = document.getElementsByClassName('targetElement');
           for (let j = 0; j < toggleButtons.length; j++) {
             toggleButtons[j].addEventListener('click', function () {
               if (targetElements[j].classList.contains('done')) {
                 targetElements[j].classList.remove('done');
-                sessionStorage.setItem("key" + j, "")
+
               } else {
                 targetElements[j].classList.add('done');
-                sessionStorage.setItem("key" + j, "done")
               }
             });
-            if (sessionStorage.getItem(`key${j}`) === "done") {
-              targetElements[j].classList.add('done');
-              toggleButtons[j].checked = true
-            } else {
-              targetElements[j].classList.remove('done');
-              toggleButtons[j].checked = false
-            }
           }
           if (window.history.replaceState) {
             window.history.replaceState(null, null, window.location.href);
