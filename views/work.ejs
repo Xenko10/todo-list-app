@@ -8,12 +8,16 @@
         <ul>
             <% if (locals.text){ %>
                 <% for (let i=0; i<text.length; i++){%>
-                    <li class="todo-item">
-                        <input type="checkbox" class="toggleButton"></input>
-                        <p class="targetElement">
-                            <%=text[i]%>
-                        </p>
-                    </li>
+                    <form action="/delete2" method="POST">
+                        <li class="todo-item">
+                            <input type="checkbox" name="checkbox" class="toggleButton" value="<%= text[i].id %>"
+                                onChange="this.form.submit()"></input>
+                            <p class="targetElement">
+                                <%=text[i].task%>
+                            </p>
+                        </li>
+                    </form>
+
                     <% }} %>
                         <li>
                             <form action="/submit2" method="POST">
@@ -26,26 +30,6 @@
 
     </div>
     <script>
-        const toggleButtons = document.getElementsByClassName('toggleButton');
-        const targetElements = document.getElementsByClassName('targetElement');
-        for (let j = 0; j < toggleButtons.length; j++) {
-            toggleButtons[j].addEventListener('click', function () {
-                if (targetElements[j].classList.contains('done')) {
-                    targetElements[j].classList.remove('done');
-                    sessionStorage.setItem("key2" + j, "")
-                } else {
-                    targetElements[j].classList.add('done');
-                    sessionStorage.setItem("key2" + j, "done")
-                }
-            });
-            if (sessionStorage.getItem(`key2${j}`) === "done") {
-                targetElements[j].classList.add('done');
-                toggleButtons[j].checked = true
-            } else {
-                targetElements[j].classList.remove('done');
-                toggleButtons[j].checked = false
-            }
-        }
         if (window.history.replaceState) {
             window.history.replaceState(null, null, window.location.href);
         }

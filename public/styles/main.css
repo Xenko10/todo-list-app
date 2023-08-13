@@ -32,6 +32,10 @@ main {
   border-radius: 0.3125rem;
 }
 
+#text-form {
+  height: 3.6875rem;
+}
+
 input[type="text"]:focus {
   outline: none;
   border-radius: 0.3125rem;
@@ -54,10 +58,6 @@ input[type="checkbox"] {
 
 p {
   flex: 100;
-}
-
-.done {
-  text-decoration: line-through;
 }
 
 .todo-item {

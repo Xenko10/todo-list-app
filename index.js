@@ -8,9 +8,6 @@ const port = 3000;
 
 app.use(cors());
 
-const list = [];
-const list2 = [];
-
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static("public"));
@@ -24,13 +21,18 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.get("/work", (req, res) => {
-  res.render("work.ejs", { text: list2 });
+app.get("/work", async (req, res) => {
+  try {
+    let data = await selectFrom("work");
+    res.render("work.ejs", { text: data });
+  } catch (error) {
+    console.error("Error retrieving data: ", error);
+  }
 });
 
 app.post("/submit", async (req, res) => {
   try {
-    await insertInto(req.body.input);
+    await insertInto("tasks", req.body.input);
     let data = await selectFrom("tasks");
     res.render("index.ejs", { text: data });
   } catch (error) {
@@ -38,32 +40,42 @@ app.post("/submit", async (req, res) => {
   }
 });
 
-app.post("/submit2", (req, res) => {
-  list2.push(req.body.input);
-  let arrayLength = list2.length;
-  if (arrayLength === 1) {
-    res.render("work.ejs", { text: list2 });
-  } else if (list2[arrayLength - 2] == req.body.input || req.body.input == "") {
-    list2.pop();
-    res.render("work.ejs", { text: list2 });
-  } else {
-    res.render("work.ejs", { text: list2 });
+app.post("/submit2", async (req, res) => {
+  try {
+    await insertInto("work", req.body.input);
+    let data = await selectFrom("work");
+    res.render("work.ejs", { text: data });
+  } catch (error) {
+    console.error("Error retrieving data: ", error);
   }
 });
 
+app.post("/delete", (req, res) => {
+  const checkedItemId = req.body.checkbox;
+  deleteFrom("tasks", checkedItemId);
+  res.redirect("/");
+});
+
+app.post("/delete2", (req, res) => {
+  const checkedItemId = req.body.checkbox;
+  deleteFrom("work", checkedItemId);
+  res.redirect("/work");
+});
+
 app.get("/submit", (req, res) => {
-  res.render("index.ejs", { text: list });
+  res.redirect("/");
 });
 
 app.get("/submit2", (req, res) => {
-  res.render("work.ejs", { text: list2 });
+  res.redirect("/work");
 });
 
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "secret",
+  password: "",
   database: "tododb",
+  port: "4306",
 });
 
 connection.connect((err) => {
@@ -91,12 +103,23 @@ function createTable() {
       console.log("Table created/exists");
     }
   );
+  connection.query(
+    `CREATE TABLE IF NOT EXISTS work (
+    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    task VARCHAR(100),
+    isDone BOOLEAN
+  )`,
+    (err) => {
+      if (err) throw new Error(err);
+      console.log("Table created/exists");
+    }
+  );
 }
 
-function insertInto(value) {
+function insertInto(name, value) {
   if (value.length !== 0 && value.length < 100) {
     connection.query(
-      `INSERT INTO tasks SET ?`,
+      `INSERT INTO ${name} SET ?`,
       {
         task: value,
         isDone: 0,
@@ -120,6 +143,13 @@ function selectFrom(table) {
         resolve(result);
       }
     });
+  });
+}
+
+function deleteFrom(table, id) {
+  connection.query(`DELETE FROM ${table} WHERE id = ${id}`, (err) => {
+    if (err) throw new Error(err);
+    console.log("1 record deleted");
   });
 }
 
