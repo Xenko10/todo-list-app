@@ -2,6 +2,14 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import mysql from "mysql";
+import dotenv from "dotenv";
+dotenv.config();
+
+const host_name = process.env.HOST_NAME;
+const user = process.env.USER;
+const password = process.env.PASSWORD;
+const database = process.env.DATABASE;
+const database_port = process.env.PORT;
 
 const app = express();
 const port = 3000;
@@ -33,8 +41,7 @@ app.get("/work", async (req, res) => {
 app.post("/submit", async (req, res) => {
   try {
     await insertInto("tasks", req.body.input);
-    let data = await selectFrom("tasks");
-    res.render("index.ejs", { text: data });
+    res.redirect("/");
   } catch (error) {
     console.error("Error retrieving data: ", error);
   }
@@ -43,23 +50,30 @@ app.post("/submit", async (req, res) => {
 app.post("/submit2", async (req, res) => {
   try {
     await insertInto("work", req.body.input);
-    let data = await selectFrom("work");
-    res.render("work.ejs", { text: data });
+    res.redirect("/work");
   } catch (error) {
     console.error("Error retrieving data: ", error);
   }
 });
 
-app.post("/delete", (req, res) => {
-  const checkedItemId = req.body.checkbox;
-  deleteFrom("tasks", checkedItemId);
-  res.redirect("/");
+app.post("/delete", async (req, res) => {
+  try {
+    const checkedItemId = req.body.checkbox;
+    await deleteFrom("tasks", checkedItemId);
+    res.redirect("/");
+  } catch (error) {
+    console.error("Error retrieving data: ", error);
+  }
 });
 
-app.post("/delete2", (req, res) => {
-  const checkedItemId = req.body.checkbox;
-  deleteFrom("work", checkedItemId);
-  res.redirect("/work");
+app.post("/delete2", async (req, res) => {
+  try {
+    const checkedItemId = req.body.checkbox;
+    await deleteFrom("work", checkedItemId);
+    res.redirect("/work");
+  } catch (error) {
+    console.error("Error retrieving data: ", error);
+  }
 });
 
 app.get("/submit", (req, res) => {
@@ -71,20 +85,20 @@ app.get("/submit2", (req, res) => {
 });
 
 const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "tododb",
-  port: "4306",
+  host: host_name,
+  user: user,
+  password: password,
+  database: database,
+  port: database_port,
 });
 
 connection.connect((err) => {
   if (err) throw new Error(err);
   console.log("Connected");
-  connection.query("CREATE DATABASE IF NOT EXISTS tododb", (err) => {
+  connection.query("CREATE DATABASE IF NOT EXISTS ??", [database], (err) => {
     if (err) throw new Error(err);
     console.log("Database created/exists");
-    connection.changeUser({ database: "tododb" }, (err) => {
+    connection.changeUser({ database: database }, (err) => {
       if (err) throw new Error(err);
       createTable();
     });
@@ -95,8 +109,7 @@ function createTable() {
   connection.query(
     `CREATE TABLE IF NOT EXISTS tasks (
     id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    task VARCHAR(100),
-    isDone BOOLEAN
+    task VARCHAR(100)
   )`,
     (err) => {
       if (err) throw new Error(err);
@@ -106,8 +119,7 @@ function createTable() {
   connection.query(
     `CREATE TABLE IF NOT EXISTS work (
     id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    task VARCHAR(100),
-    isDone BOOLEAN
+    task VARCHAR(100)
   )`,
     (err) => {
       if (err) throw new Error(err);
@@ -119,11 +131,13 @@ function createTable() {
 function insertInto(name, value) {
   if (value.length !== 0 && value.length < 100) {
     connection.query(
-      `INSERT INTO ${name} SET ?`,
-      {
-        task: value,
-        isDone: 0,
-      },
+      `INSERT INTO ?? SET ?`,
+      [
+        name,
+        {
+          task: value,
+        },
+      ],
       (err) => {
         if (err) throw new Error(err);
         console.log("1 record inserted");
@@ -136,18 +150,22 @@ function insertInto(name, value) {
 
 function selectFrom(table) {
   return new Promise((resolve, reject) => {
-    connection.query(`SELECT * FROM ${table}`, function (err, result, fields) {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(result);
+    connection.query(
+      `SELECT * FROM ??`,
+      [table],
+      function (err, result, fields) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
       }
-    });
+    );
   });
 }
 
 function deleteFrom(table, id) {
-  connection.query(`DELETE FROM ${table} WHERE id = ${id}`, (err) => {
+  connection.query(`DELETE FROM ?? WHERE id = ?`, [table, id], (err) => {
     if (err) throw new Error(err);
     console.log("1 record deleted");
   });
