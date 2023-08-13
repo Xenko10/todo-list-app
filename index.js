@@ -130,19 +130,14 @@ function createTable() {
 
 function insertInto(name, value) {
   if (value.length !== 0 && value.length < 100) {
-    connection.query(
-      `INSERT INTO ?? SET ?`,
-      [
-        name,
-        {
-          task: value,
-        },
-      ],
-      (err) => {
-        if (err) throw new Error(err);
-        console.log("1 record inserted");
-      }
-    );
+    const input = {
+      task: value,
+    };
+    const query = "INSERT INTO ?? SET ?";
+    connection.query(query, [name, input], (err) => {
+      if (err) throw new Error(err);
+      console.log("1 record inserted");
+    });
   } else {
     console.log("0 records inserted");
   }
