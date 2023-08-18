@@ -146,7 +146,7 @@ function insertInto(name, value) {
 function selectFrom(table) {
   return new Promise((resolve, reject) => {
     connection.query(
-      `SELECT * FROM ??`,
+      `SELECT id, task FROM ??`,
       [table],
       function (err, result, fields) {
         if (err) {
