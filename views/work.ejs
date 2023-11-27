@@ -29,7 +29,7 @@
         const toggleButtons = document.getElementsByClassName('toggleButton');
         const targetElements = document.getElementsByClassName('targetElement');
         for (let j = 0; j < toggleButtons.length; j++) {
-            toggleButtons[j].addEventListener('click', function () {
+            toggleButtons[j].addEventListener('click', () => {
                 if (targetElements[j].classList.contains('done')) {
                     targetElements[j].classList.remove('done');
                     sessionStorage.setItem("key2" + j, "")
