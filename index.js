@@ -7,6 +7,10 @@ const port = 3000;
 const todayList = [];
 const workList = [];
 
+function isDuplicate(list, input) {
+  return list.includes(input);
+}
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static("public"));
@@ -24,12 +28,18 @@ app.get("/work", (_req, res) => {
 });
 
 app.post("/today", (req, res) => {
-  todayList.push(req.body.input);
+  const input = req.body.input;
+  if (isDuplicate(todayList, input) === false) {
+    todayList.push(input);
+  }
   res.render("index.ejs", { text: todayList });
 });
 
 app.post("/work", (req, res) => {
-  workList.push(req.body.input);
+  const input = req.body.input;
+  if (isDuplicate(workList, input) === false) {
+    workList.push(input);
+  }
   res.render("work.ejs", { text: workList });
 });
 
