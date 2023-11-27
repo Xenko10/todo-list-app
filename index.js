@@ -4,53 +4,33 @@ import bodyParser from "body-parser";
 const app = express();
 const port = 3000;
 
-const list = [];
-const list2 = [];
+const todayList = [];
+const workList = [];
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static("public"));
 
-app.get("/", (req, res) => {
-  res.render("index.ejs", { text: list });
+app.get("/", (_req, res) => {
+  res.redirect("/today");
 });
 
-app.get("/work", (req, res) => {
-  res.render("work.ejs", { text: list2 });
+app.get("/today", (_req, res) => {
+  res.render("index.ejs", { text: todayList });
 });
 
-app.post("/submit", (req, res) => {
-  list.push(req.body.input);
-  let arrayLength = list.length;
-  if (arrayLength === 1) {
-    res.render("index.ejs", { text: list });
-  } else if (list[arrayLength - 2] == req.body.input || req.body.input == "") {
-    list.pop();
-    res.render("index.ejs", { text: list });
-  } else {
-    res.render("index.ejs", { text: list });
-  }
+app.get("/work", (_req, res) => {
+  res.render("work.ejs", { text: workList });
 });
 
-app.post("/submit2", (req, res) => {
-  list2.push(req.body.input);
-  let arrayLength = list2.length;
-  if (arrayLength === 1) {
-    res.render("work.ejs", { text: list2 });
-  } else if (list2[arrayLength - 2] == req.body.input || req.body.input == "") {
-    list2.pop();
-    res.render("work.ejs", { text: list2 });
-  } else {
-    res.render("work.ejs", { text: list2 });
-  }
+app.post("/today", (req, res) => {
+  todayList.push(req.body.input);
+  res.render("index.ejs", { text: todayList });
 });
 
-app.get("/submit", (req, res) => {
-  res.render("index.ejs", { text: list });
-});
-
-app.get("/submit2", (req, res) => {
-  res.render("work.ejs", { text: list2 });
+app.post("/work", (req, res) => {
+  workList.push(req.body.input);
+  res.render("work.ejs", { text: workList });
 });
 
 app.listen(port, () => {
