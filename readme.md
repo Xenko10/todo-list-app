@@ -1,7 +1,7 @@
 <div align="center">
-    <h2>Today subpage</h3>
+    <h2>Today subpage</h2>
 <img src="./img/today_subpage.png" alt="Today subpage">
-    <h2>Work subpage</h3>
+    <h2>Work subpage</h2>
 <img src="./img/work_subpage.png" alt="Work subpage">
 </div>
 
